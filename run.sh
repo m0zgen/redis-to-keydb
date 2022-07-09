@@ -114,7 +114,7 @@ migrate() {
     cp /etc/redis/redis.conf keydb.conf; chown keydb:keydb keydb.conf
 
     if [[ -d /etc/redis/modules ]]; then
-        cp /etc/redis/modules .
+        cp -r /etc/redis/modules .
         chown -R keydb:keydb modules
     fi
 
