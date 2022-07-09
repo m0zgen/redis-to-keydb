@@ -105,6 +105,23 @@ service_exists() {
     fi
 }
 
+paths_fixing() {
+
+    sed -i '/^pidfile/s//# &/' $1
+    sed -i '/^logfile/s//# &/' $1
+    sed -i '/^bind/s//# &/' $1
+    sed -i '/^dir \/var\/lib/s//# &/' $1
+}
+
+update_configs() {
+
+    echo "dir /var/lib/keydb" >> keydb.conf
+    echo "logfile /var/log/keydb/keydb-server.log" >> keydb.conf
+    echo "pidfile /var/run/keydb/keydb-server.pid" >> keydb.conf
+    echo "bind 0.0.0.0 ::" >> keydb
+    
+}
+
 migrate() {
 
     echo "bgsave" | redis-cli
@@ -117,7 +134,10 @@ migrate() {
         cp -r /etc/redis/modules .
         chown -R keydb:keydb modules
     fi
-    
+
+    paths_fixing "keydb.conf"
+    paths_fixing "modules/*.conf"
+
     Info "$ON_CHECK" "Stop Redis and trying to start KeyDB..."
     systemctl disable --now $_REDIS-server
     systemctl restart $_KEYDB-server
