@@ -146,11 +146,11 @@ checking() {
             sudo wget -O /etc/apt/trusted.gpg.d/keydb.gpg https://download.keydb.dev/open-source-dist/keyring.gpg
             sudo apt update
 
-            # Install without service start
-            sudo RUNLEVEL=1 apt install keydb-server keydb-tools -y
+            systemctl stop $_REDIS-server
+            sudo apt install keydb-server keydb-tools -y
             
             # Additional step
-            systemctl stop $_KEYDB-server
+            systemctl stop $_KEYDB-server; systemctl start $_REDIS-server
 
             migrate
 
