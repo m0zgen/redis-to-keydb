@@ -130,6 +130,11 @@ migrate() {
 
 checking() {
 
+    if [[ ! -d "/etc/redis" ]]; then
+        Info "$ON_FAIL" "Redis service already does not found. Exit..."
+        exit 1
+    fi
+
     if service_exists "$_REDIS-server"; then
         Info "$ON_CHECK" "Redis service already installed. Checking KeyDB..."
 
@@ -161,7 +166,7 @@ checking() {
 
 
     else
-        Info "$ON_FAIL" "Redis service already does not found. Exit..."
+        Info "$ON_FAIL" "Redis service does not running. Please start Redis for migration. Exit..."
         exit 1
     fi
 
