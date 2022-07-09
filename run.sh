@@ -117,9 +117,8 @@ migrate() {
         cp -r /etc/redis/modules .
         chown -R keydb:keydb modules
     fi
-
-    migrate
     
+    Info "$ON_CHECK" "Stop Redis and trying to start KeyDB..."
     systemctl disable --now $_REDIS-server
     systemctl restart $_KEYDB-server
 
