@@ -157,6 +157,9 @@ checking() {
             # Additional step
             systemctl stop $_KEYDB-server; systemctl start $_REDIS-server
 
+            sleep 5
+
+            Info "$ON_CHECK" "Starting migration..."
             migrate
 
         fi
